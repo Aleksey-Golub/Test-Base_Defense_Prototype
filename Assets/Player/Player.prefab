@@ -297,6 +297,7 @@ GameObject:
   - component: {fileID: 2239367355230380066}
   - component: {fileID: 2239367355230380093}
   - component: {fileID: 2239367355230380092}
+  - component: {fileID: 128201906498970614}
   m_Layer: 0
   m_Name: Riffle
   m_TagString: Untagged
@@ -370,6 +371,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &128201906498970614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2239367355230380065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94eaafa8d2fa7b144b9fe319dd1f1d99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShootPoint: {fileID: 2239367355849656459}
+  <ShootDelay>k__BackingField: 1
+  _projectilePrefab: {fileID: 7227066254159763172, guid: 8a09bd5efaa4a4543b5ad87e4d9db49d, type: 3}
 --- !u!1 &2239367355849656458
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,10 +642,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4275168878055505703}
+  - component: {fileID: 4622486029759449365}
   - component: {fileID: 2614242618101040172}
   - component: {fileID: -7281971379852014113}
   - component: {fileID: 7806652806725948085}
-  - component: {fileID: 4622486029759449365}
+  - component: {fileID: 131742341163004056}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -653,6 +670,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4622486029759449365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4275168878055505704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea6fe1cbecb9c8346ad7a456cb1e26e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 4275168879418765786}
 --- !u!114 &2614242618101040172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -667,6 +697,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mover: {fileID: 7806652806725948085}
   _viewer: {fileID: 4622486029759449365}
+  _targetFinder: {fileID: 131742341163004056}
+  _gun: {fileID: 128201906498970614}
 --- !u!143 &-7281971379852014113
 CharacterController:
   m_ObjectHideFlags: 0
@@ -697,8 +729,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f3861a53673e0247834026813ef43e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementSpeed: 3
---- !u!114 &4622486029759449365
+  <MovementSpeed>k__BackingField: 3
+--- !u!114 &131742341163004056
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -707,10 +739,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4275168878055505704}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea6fe1cbecb9c8346ad7a456cb1e26e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 3bbc9a7e8992d634f9e79f90043511a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 4275168879418765786}
+  <Radius>k__BackingField: 5
+  <LayerMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &4284302449056333605
 GameObject:
   m_ObjectHideFlags: 0

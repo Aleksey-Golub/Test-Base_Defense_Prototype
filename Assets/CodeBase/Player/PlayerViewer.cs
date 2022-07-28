@@ -12,23 +12,16 @@ namespace Assets.CodeBase.Player
         private readonly int _idleStateHash = Animator.StringToHash("DynIdle");
         private readonly int _deathStateHash = Animator.StringToHash("Death");
         private readonly int _runStateHash = Animator.StringToHash("Running");
-        private readonly int _riffleWalkStateHash = Animator.StringToHash("RiffleWalk");
         private readonly int _throwWalkStateHash = Animator.StringToHash("Throw");
+        private readonly int _riffleWalkStateHash = Animator.StringToHash("RiffleWalk");
+        private readonly int _riffleIdleStateHash = Animator.StringToHash("RiffleIdle");
 
-        internal void PlayMove()
-        {
-            PlayAnimation(AnimatorState.Move);
-        }
-
-        internal void PlayIdle()
-        {
-            PlayAnimation(AnimatorState.Idle);
-        }
-
-        internal void PlayDeath()
-        {
-            PlayAnimation(AnimatorState.Death);
-        }
+        internal void PlayMove() => PlayAnimation(AnimatorState.Move);
+        internal void PlayIdle() => PlayAnimation(AnimatorState.Idle);
+        internal void PlayIdleWithRiffle() => PlayAnimation(AnimatorState.RiffleIdle);
+        internal void PlayDeath() => PlayAnimation(AnimatorState.Death);
+        internal void PlayMoveWithRiffle() => PlayAnimation(AnimatorState.RiffleMove);
+        internal void PlayThrow() => PlayAnimation(AnimatorState.Throw);
 
         private void PlayAnimation(AnimatorState state)
         {
@@ -41,18 +34,17 @@ namespace Assets.CodeBase.Player
 
         private int GetAnimHash(AnimatorState state)
         {
-            switch (state)
+            return state switch
             {
-                case AnimatorState.Move:
-                    return _runStateHash;
-                case AnimatorState.Idle:
-                    return _idleStateHash;
-                case AnimatorState.Death:
-                    return _deathStateHash;
-                case AnimatorState.None:
-                default:
-                    throw new NotImplementedException();
-            }
+                AnimatorState.Move => _runStateHash,
+                AnimatorState.Idle => _idleStateHash,
+                AnimatorState.Death => _deathStateHash,
+                AnimatorState.Throw => _throwWalkStateHash,
+                AnimatorState.RiffleMove => _riffleWalkStateHash,
+                AnimatorState.RiffleIdle => _riffleIdleStateHash,
+                AnimatorState.None => throw new NotImplementedException(),
+                _ => throw new NotImplementedException(),
+            };
         }
 
         private enum AnimatorState
@@ -60,7 +52,10 @@ namespace Assets.CodeBase.Player
             None,
             Move,
             Idle,
-            Death
+            Death,
+            Throw,
+            RiffleMove,
+            RiffleIdle
         }
     }
 }

@@ -4,7 +4,12 @@ namespace Assets.CodeBase.Player
 {
     public abstract class MoverBase : MonoBehaviour
     {
-        [SerializeField] protected float MovementSpeed = 1f;
+        [field: SerializeField] public float MovementSpeed { get; private set; } = 1f;
+
+        public void Construct(float movementSpeed)
+        {
+            MovementSpeed = movementSpeed;
+        }
 
         public abstract bool IsMoved { get; }
 
