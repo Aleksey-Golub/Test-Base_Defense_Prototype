@@ -8,10 +8,14 @@ namespace Assets.CodeBase.Player
 {
     public class PlayerController : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private MoverBase _mover;
         [SerializeField] private PlayerViewer _viewer;
         [SerializeField] private PlayerTargetFinderBase _targetFinder;
         [SerializeField] private GunBase _gun;
+
+        [Header("Settings")]
+        [SerializeField] private  float _targetFindDelay = 1f;
 
         private IInputService _input;
         private PlayerStateBase _state;
@@ -99,8 +103,6 @@ namespace Assets.CodeBase.Player
 
         public class OnLevelState : PlayerStateBase
         {
-            private const float TARGET_FIND_DELAY = 1f;
-
             public OnLevelState(PlayerController player) : base(player)
             { }
 
@@ -146,9 +148,9 @@ namespace Assets.CodeBase.Player
 
             private void FindTarget()
             {
-                if (Timer >= TARGET_FIND_DELAY)
+                if (Timer >= Player._targetFindDelay)
                 {
-                    Timer -= TARGET_FIND_DELAY;
+                    Timer -= Player._targetFindDelay;
                     Player._target = Player._targetFinder.GetNearestTarget(Player.transform.position);
                 }
             }
