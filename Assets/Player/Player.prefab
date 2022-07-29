@@ -384,6 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShootPoint: {fileID: 2239367355849656459}
+  <Type>k__BackingField: 1
   <ShootDelay>k__BackingField: 1
   _projectilePrefab: {fileID: 7227066254159763172, guid: 8a09bd5efaa4a4543b5ad87e4d9db49d, type: 3}
 --- !u!1 &2239367355849656458

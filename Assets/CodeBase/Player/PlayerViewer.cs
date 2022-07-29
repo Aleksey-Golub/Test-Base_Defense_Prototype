@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Assets.CodeBase.Player.Gun;
 
 namespace Assets.CodeBase.Player
 {
@@ -18,10 +19,33 @@ namespace Assets.CodeBase.Player
 
         internal void PlayMove() => PlayAnimation(AnimatorState.Move);
         internal void PlayIdle() => PlayAnimation(AnimatorState.Idle);
-        internal void PlayIdleWithRiffle() => PlayAnimation(AnimatorState.RiffleIdle);
         internal void PlayDeath() => PlayAnimation(AnimatorState.Death);
-        internal void PlayMoveWithRiffle() => PlayAnimation(AnimatorState.RiffleMove);
         internal void PlayThrow() => PlayAnimation(AnimatorState.Throw);
+        internal void PlayIdleWithGun(GunType type)
+        {
+            switch (type)
+            {
+                case GunType.Riffle:
+                    PlayAnimation(AnimatorState.RiffleIdle);
+                    break;
+                case GunType.None:
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        internal void PlayMoveWithGun(GunType type)
+        {
+            switch (type)
+            {
+                case GunType.Riffle:
+                    PlayAnimation(AnimatorState.RiffleMove);
+                    break;
+                case GunType.None:
+                default:
+                    throw new NotImplementedException();
+            }
+        }
 
         private void PlayAnimation(AnimatorState state)
         {

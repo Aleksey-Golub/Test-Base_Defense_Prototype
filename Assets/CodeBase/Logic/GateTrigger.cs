@@ -14,6 +14,6 @@ namespace Assets.CodeBase.Logic
             {
                 player.TransitionTo(_transitionToState);
             }
-    }
+        }
     }
 }

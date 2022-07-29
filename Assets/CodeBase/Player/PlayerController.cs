@@ -25,11 +25,12 @@ namespace Assets.CodeBase.Player
         public void Construct(IInputService input)
         {
             _input = input;
+
             _state = new OnBaseState(this);
             _state.Enter();
         }
 
-        internal void TransitionTo(PlayerState transitionToState)
+        public void TransitionTo(PlayerState transitionToState)
         {
             _state.Exit();
             _state = transitionToState switch
@@ -71,7 +72,7 @@ namespace Assets.CodeBase.Player
 
             public override void Enter()
             {
-                Player._gun.gameObject.SetActive(false);
+                Player._gun.Off();
             }
 
             public override void Execute(float deltaTime)
@@ -105,7 +106,7 @@ namespace Assets.CodeBase.Player
 
             public override void Enter()
             {
-                Player._gun.gameObject.SetActive(true);
+                Player._gun.On();
             }
 
             public override void Execute(float deltaTime)
@@ -115,12 +116,12 @@ namespace Assets.CodeBase.Player
                 if (normalizedMovementVector != Vector3.zero)
                 {
                     Player._mover.Move(normalizedMovementVector);
-                    Player._viewer.PlayMoveWithRiffle();
+                    Player._viewer.PlayMoveWithGun(Player._gun.Type);
                     Player.transform.rotation = Quaternion.LookRotation(normalizedMovementVector);
                 }
                 else
                 {
-                    Player._viewer.PlayIdleWithRiffle();
+                    Player._viewer.PlayIdleWithGun(Player._gun.Type);
                 }
 
                 Timer += deltaTime;
@@ -138,6 +139,7 @@ namespace Assets.CodeBase.Player
                 if (Player._target != null && Player._target.IsAlive)
                 {
                     Player.TransitionTo(PlayerState.InBattle);
+                    
                     Exit();
                 }
             }
@@ -159,7 +161,7 @@ namespace Assets.CodeBase.Player
 
             public override void Enter()
             {
-                Player._gun.gameObject.SetActive(true);
+                Player._gun.On();
             }
 
             public override void Execute(float deltaTime)
@@ -169,12 +171,12 @@ namespace Assets.CodeBase.Player
                 if (normalizedMovementVector != Vector3.zero)
                 {
                     Player._mover.Move(normalizedMovementVector);
-                    Player._viewer.PlayMoveWithRiffle();
+                    Player._viewer.PlayMoveWithGun(Player._gun.Type);
                     Player.transform.rotation = Quaternion.LookRotation(Player._target.Transform.position - Player.transform.position);
                 }
                 else
                 {
-                    Player._viewer.PlayIdleWithRiffle();
+                    Player._viewer.PlayIdleWithGun(Player._gun.Type);
                 }
 
                 Timer += deltaTime;
