@@ -33,7 +33,7 @@ namespace Assets.CodeBase.Enemies
                 Die();
         }
 
-        public void Die()
+        private void Die()
         {
             Destroy(gameObject);
         }

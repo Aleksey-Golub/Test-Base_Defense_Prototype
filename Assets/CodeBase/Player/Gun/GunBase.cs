@@ -5,6 +5,7 @@ namespace Assets.CodeBase.Player.Gun
 {
     public abstract class GunBase : MonoBehaviour
     {
+        [Header("BaseGun")]
         [SerializeField] protected Transform ShootPoint;
 
         [field: SerializeField] public GunType Type { get; private set; }

@@ -17,6 +17,7 @@ namespace Assets.CodeBase.Player
 
             public override void Execute(float deltaTime)
             {
+                Debug.Log("OnBase Execute");
                 Vector3 normalizedMovementVector = new Vector3(Player._input.Axis.x, 0, Player._input.Axis.y).normalized;
 
                 if (normalizedMovementVector != Vector3.zero)

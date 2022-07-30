@@ -6,10 +6,13 @@ namespace Assets.CodeBase.Player
     {
         public override void RotateIn(Vector3 direction, float deltaTime)
         {
-            //transform.rotation = Quaternion.LookRotation(direction);
-            Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, RotationSpeed * deltaTime, 0.0f);
-
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, RotationSpeed * deltaTime * Mathf.Deg2Rad, 0.0f);
+            newDirection.y = transform.position.y;
             transform.rotation = Quaternion.LookRotation(newDirection);
+
+            Vector3 newLocalRot = transform.localEulerAngles;
+            newLocalRot.x = 0;
+            transform.localEulerAngles = newLocalRot;
         }
     }
 }

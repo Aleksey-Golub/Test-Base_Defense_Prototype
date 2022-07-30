@@ -23,6 +23,8 @@ namespace Assets.CodeBase.Player
 
             public override void Execute(float deltaTime)
             {
+                Debug.Log("InBattle Execute");
+
                 _findTargetTimer.Take(deltaTime);
                 if (_findTargetTimer.Value >= Player._targetFindDelay)
                 {
