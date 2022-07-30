@@ -12,7 +12,9 @@ namespace Assets.CodeBase.Player
 
             public override void Enter()
             {
+                Player.RemoveAllResourcesToBase();
                 Player._gun.Off();
+                Player._hPBar.SetState(false);
             }
 
             public override void Execute(float deltaTime)

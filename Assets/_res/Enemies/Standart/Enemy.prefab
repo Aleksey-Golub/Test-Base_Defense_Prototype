@@ -540,6 +540,7 @@ GameObject:
   - component: {fileID: 5093232906426978068}
   - component: {fileID: 5093232906426978069}
   - component: {fileID: 4746816051398125637}
+  - component: {fileID: 4615815113754241977}
   m_Layer: 10
   m_Name: Enemy
   m_TagString: Untagged
@@ -589,7 +590,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57844ef2b3f3094eb73fb68090e0016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _lootSpawner: {fileID: 4615815113754241977}
   _maxHP: 5
+--- !u!114 &4615815113754241977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5093232906426978070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a2094c4e57a3fe4f9f5d105bebd2356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lootData:
+  - _prefab: {fileID: 321670215752765869, guid: 327ccee61c7b24f489dc66c0b1423c01, type: 3}
+    _spawnChance: 50
+    _minAmount: 1
+    _maxAmount: 10
+  - _prefab: {fileID: 2204911374765233273, guid: ef96a91608d7cc54e8a157da439203fc, type: 3}
+    _spawnChance: 50
+    _minAmount: 1
+    _maxAmount: 10
 --- !u!1 &6006985667739789480
 GameObject:
   m_ObjectHideFlags: 0

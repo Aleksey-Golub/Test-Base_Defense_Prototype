@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.CodeBase.Logic
 {
@@ -7,6 +8,7 @@ namespace Assets.CodeBase.Logic
         Transform Transform { get; }
         bool IsAlive { get; }
         int HP { get; }
+        event Action<int, int> HPChanged;
 
         void TakeDamage(int damage);
     }

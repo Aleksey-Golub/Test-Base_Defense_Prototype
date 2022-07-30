@@ -17,6 +17,7 @@ namespace Assets.CodeBase.Player
             public override void Enter()
             {
                 Player._gun.On();
+                Player._hPBar.SetState(true);
             }
 
             public override void Execute(float deltaTime)
