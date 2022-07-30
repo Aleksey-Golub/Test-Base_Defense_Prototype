@@ -6,20 +6,28 @@ using UnityEngine;
 
 namespace Assets.CodeBase.Player
 {
-    public class PlayerController : MonoBehaviour
+    public partial class PlayerController : MonoBehaviour, IDamageable
     {
         [Header("References")]
         [SerializeField] private MoverBase _mover;
+        [SerializeField] private RotatorBase _rotator;
         [SerializeField] private PlayerViewer _viewer;
-        [SerializeField] private PlayerTargetFinderBase _targetFinder;
+        [SerializeField] private TargetFinderBase _targetFinder;
         [SerializeField] private GunBase _gun;
 
         [Header("Settings")]
-        [SerializeField] private  float _targetFindDelay = 1f;
+        [SerializeField] private float _targetFindDelay = 1f;
+        [SerializeField] private int _maxHP = 5;
 
         private IInputService _input;
-        private PlayerStateBase _state;
+        
         private IDamageable _target;
+        private PlayerStateBase _state;
+
+
+        public Transform Transform => transform;
+        public bool IsAlive => HP > 0;
+        public int HP { get; private set; }
 
         public void Update()
         {
@@ -29,6 +37,7 @@ namespace Assets.CodeBase.Player
         public void Construct(IInputService input)
         {
             _input = input;
+            HP = _maxHP;
 
             _state = new OnBaseState(this);
             _state.Enter();
@@ -53,152 +62,23 @@ namespace Assets.CodeBase.Player
             Gizmos.DrawWireSphere(transform.position, _targetFinder.Radius);
         }
 
-        public abstract class PlayerStateBase
+        public void TakeDamage(int damage)
         {
-            protected PlayerController Player;
-            protected float Timer;
+            HP -= damage;
+            HP = HP < 0 ? 0 : HP;
 
-            protected PlayerStateBase(PlayerController player)
-            {
-                Player = player;
-            }
-
-            public abstract void Enter();
-            public abstract void Execute(float deltaTime);
-            public abstract void Exit();
-            protected abstract void CheckTransitions();
+            if (HP == 0)
+                Die();
         }
 
-        public class OnBaseState : PlayerStateBase
+        private void Die()
         {
-            public OnBaseState(PlayerController player) : base(player)
-            { }
-
-            public override void Enter()
-            {
-                Player._gun.Off();
-            }
-
-            public override void Execute(float deltaTime)
-            {
-                Vector3 normalizedMovementVector = new Vector3(Player._input.Axis.x, 0, Player._input.Axis.y).normalized;
-
-                if (normalizedMovementVector != Vector3.zero)
-                {
-                    Player._mover.Move(normalizedMovementVector);
-                    Player._viewer.PlayMove();
-                    Player.transform.rotation = Quaternion.LookRotation(normalizedMovementVector);
-                }
-                else
-                {
-                    Player._viewer.PlayIdle();
-                }
-            }
-            public override void Exit()
-            { }
-
-            protected override void CheckTransitions()
-            { }
+            Destroy(gameObject);
         }
 
-        public class OnLevelState : PlayerStateBase
+        private void FindTarget()
         {
-            public OnLevelState(PlayerController player) : base(player)
-            { }
-
-            public override void Enter()
-            {
-                Player._gun.On();
-            }
-
-            public override void Execute(float deltaTime)
-            {
-                Vector3 normalizedMovementVector = new Vector3(Player._input.Axis.x, 0, Player._input.Axis.y).normalized;
-
-                if (normalizedMovementVector != Vector3.zero)
-                {
-                    Player._mover.Move(normalizedMovementVector);
-                    Player._viewer.PlayMoveWithGun(Player._gun.Type);
-                    Player.transform.rotation = Quaternion.LookRotation(normalizedMovementVector);
-                }
-                else
-                {
-                    Player._viewer.PlayIdleWithGun(Player._gun.Type);
-                }
-
-                Timer += deltaTime;
-                FindTarget();
-                CheckTransitions();
-            }
-
-            public override void Exit()
-            {
-                Timer = 0;
-            }
-
-            protected override void CheckTransitions()
-            {
-                if (Player._target != null && Player._target.IsAlive)
-                {
-                    Player.TransitionTo(PlayerState.InBattle);
-                    
-                    Exit();
-                }
-            }
-
-            private void FindTarget()
-            {
-                if (Timer >= Player._targetFindDelay)
-                {
-                    Timer -= Player._targetFindDelay;
-                    Player._target = Player._targetFinder.GetNearestTarget(Player.transform.position);
-                }
-            }
-        }
-
-        public class InBattleState : PlayerStateBase
-        {
-            public InBattleState(PlayerController player) : base(player)
-            { }
-
-            public override void Enter()
-            {
-                Player._gun.On();
-            }
-
-            public override void Execute(float deltaTime)
-            {
-                Vector3 normalizedMovementVector = new Vector3(Player._input.Axis.x, 0, Player._input.Axis.y).normalized;
-
-                if (normalizedMovementVector != Vector3.zero)
-                {
-                    Player._mover.Move(normalizedMovementVector);
-                    Player._viewer.PlayMoveWithGun(Player._gun.Type);
-                    Player.transform.rotation = Quaternion.LookRotation(Player._target.Transform.position - Player.transform.position);
-                }
-                else
-                {
-                    Player._viewer.PlayIdleWithGun(Player._gun.Type);
-                }
-
-                Timer += deltaTime;
-                if (Timer >= Player._gun.ShootDelay)
-                    Player._gun.Shoot();
-            }
-
-            public override void Exit()
-            {
-                Timer = 0;
-            }
-
-            protected override void CheckTransitions()
-            {
-                if (Player._target == null || Player._target.IsAlive == false)
-                {
-                    Player.TransitionTo(PlayerState.OnLevel);
-                    Exit();
-                }
-            }
+            _target = _targetFinder.GetNearestTarget(transform.position);
         }
 
         public enum PlayerState

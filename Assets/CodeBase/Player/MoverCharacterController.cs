@@ -15,9 +15,9 @@ namespace Assets.CodeBase.Player
             _characterController = GetComponent<CharacterController>();
         }
 
-        public override void Move(Vector3 input)
+        public override void Move(Vector3 input, float deltaTime)
         {
-            _characterController.Move(MovementSpeed * Time.deltaTime * input);
+            _characterController.Move(MovementSpeed * deltaTime * input);
         }
     }
 }

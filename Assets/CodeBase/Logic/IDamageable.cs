@@ -6,5 +6,8 @@ namespace Assets.CodeBase.Logic
     {
         Transform Transform { get; }
         bool IsAlive { get; }
+        int HP { get; }
+
+        void TakeDamage(int damage);
     }
 }

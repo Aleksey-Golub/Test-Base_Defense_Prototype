@@ -8,6 +8,7 @@ namespace Assets.CodeBase.Player.Gun
 
         public override void Shoot()
         {
+            Debug.Log("Shoot");
             Instantiate(_projectilePrefab, ShootPoint.position, ShootPoint.rotation);
         }
     }

@@ -13,6 +13,6 @@ namespace Assets.CodeBase.Player
 
         public abstract bool IsMoved { get; }
 
-        public abstract void Move(Vector3 input);
+        public abstract void Move(Vector3 input, float deltaTime);
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.CodeBase.Player
 {
-    public class PlayerTargetFinder : PlayerTargetFinderBase
+    public class OverlapSphereTargetFinder : TargetFinderBase
     {
         public override IDamageable GetNearestTarget(Vector3 point)
         {
@@ -23,6 +23,7 @@ namespace Assets.CodeBase.Player
                     }
                 }
             }
+
             return nearest;
         }
     }
