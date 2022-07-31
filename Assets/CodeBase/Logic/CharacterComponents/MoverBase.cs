@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.CodeBase.Player
+namespace Assets.CodeBase.Logic.CharacterComponents
 {
     public abstract class MoverBase : MonoBehaviour
     {

@@ -2,9 +2,9 @@
 using UnityEngine;
 using Assets.CodeBase.Player.Gun;
 
-namespace Assets.CodeBase.Player
+namespace Assets.CodeBase.Logic.CharacterComponents
 {
-    public class PlayerViewer : MonoBehaviour
+    public class CharacterViewer : MonoBehaviour
     {
         [SerializeField] private Animator _animator;
 
@@ -17,11 +17,11 @@ namespace Assets.CodeBase.Player
         private readonly int _riffleWalkStateHash = Animator.StringToHash("RiffleWalk");
         private readonly int _riffleIdleStateHash = Animator.StringToHash("RiffleIdle");
 
-        internal void PlayMove() => PlayAnimation(AnimatorState.Move);
-        internal void PlayIdle() => PlayAnimation(AnimatorState.Idle);
-        internal void PlayDeath() => PlayAnimation(AnimatorState.Death);
-        internal void PlayThrow() => PlayAnimation(AnimatorState.Throw);
-        internal void PlayIdleWithGun(GunType type)
+        public void PlayMove() => PlayAnimation(AnimatorState.Move);
+        public void PlayIdle() => PlayAnimation(AnimatorState.Idle);
+        public void PlayDeath() => PlayAnimation(AnimatorState.Death);
+        public void PlayThrow() => PlayAnimation(AnimatorState.Throw);
+        public void PlayIdleWithGun(GunType type)
         {
             switch (type)
             {
@@ -34,7 +34,7 @@ namespace Assets.CodeBase.Player
             }
         }
 
-        internal void PlayMoveWithGun(GunType type)
+        public void PlayMoveWithGun(GunType type)
         {
             switch (type)
             {

@@ -1,41 +1,24 @@
 ﻿using Assets.CodeBase.Logic;
-using UnityEngine;
 
-namespace Assets.CodeBase.Player
+namespace Assets.CodeBase.Enemies
 {
-    public partial class PlayerController
+    public partial class EnemyController
     {
-        private class OnLevelState : PlayerStateBase
+        private class NoPlayerState : EnemyStateBase
         {
             private Timer _findTargetTimer;
 
-            public OnLevelState(PlayerController player) : base(player)
+            public NoPlayerState(EnemyController controller) : base(controller)
             {
                 _findTargetTimer = new Timer();
             }
 
             public override void Enter()
             {
-                Controller._gun.On();
-                Controller._hPBar.SetState(true);
             }
 
             public override void Execute(float deltaTime)
             {
-                Debug.Log("OnLevel Execute");
-                Vector3 normalizedMovementVector = new Vector3(Controller._input.Axis.x, 0, Controller._input.Axis.y).normalized;
-
-                if (normalizedMovementVector != Vector3.zero)
-                {
-                    Controller._mover.Move(normalizedMovementVector, deltaTime);
-                    Controller._viewer.PlayMoveWithGun(Controller._gun.Type);
-                    Controller._rotator.RotateIn(normalizedMovementVector, deltaTime);
-                }
-                else
-                {
-                    Controller._viewer.PlayIdleWithGun(Controller._gun.Type);
-                }
-
                 _findTargetTimer.Take(deltaTime);
                 if (_findTargetTimer.Value >= Controller._targetFindDelay)
                 {
@@ -55,7 +38,7 @@ namespace Assets.CodeBase.Player
             {
                 if (Controller._target != null && Controller._target.IsAlive)
                 {
-                    Controller.TransitionTo(PlayerState.InBattle);
+                    Controller.TransitionTo(EnemyState.SeePlayer);
                     return true;
                 }
                 return false;

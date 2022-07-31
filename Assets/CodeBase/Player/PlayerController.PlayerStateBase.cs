@@ -1,20 +1,15 @@
-﻿namespace Assets.CodeBase.Player
+﻿using Assets.CodeBase.Logic.CharacterComponents;
+
+namespace Assets.CodeBase.Player
 {
     public partial class PlayerController
     {
-        private abstract class PlayerStateBase
+        private abstract class PlayerStateBase : StateBase<PlayerController>
         {
-            protected PlayerController Player;
-
             protected PlayerStateBase(PlayerController player)
             {
-                Player = player;
+                Controller = player;
             }
-
-            public abstract void Enter();
-            public abstract void Execute(float deltaTime);
-            public abstract void Exit();
-            protected abstract bool CheckAndDoTransitions();
         }
     }
 }

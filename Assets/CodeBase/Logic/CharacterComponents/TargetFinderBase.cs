@@ -1,7 +1,6 @@
-﻿using Assets.CodeBase.Logic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.CodeBase.Player
+namespace Assets.CodeBase.Logic.CharacterComponents
 {
     public abstract class TargetFinderBase : MonoBehaviour
     {

@@ -1,19 +1,13 @@
 ﻿using UnityEngine;
 
-namespace Assets.CodeBase.Player
+namespace Assets.CodeBase.Logic.CharacterComponents
 {
     [RequireComponent(typeof(CharacterController))]
     public class MoverCharacterController : MoverBase
     {
-        
-        private CharacterController _characterController;
+        [SerializeField] private CharacterController _characterController;
 
         public override bool IsMoved => _characterController.velocity.sqrMagnitude > Constants.Epsilon;
-
-        private void Awake()
-        {
-            _characterController = GetComponent<CharacterController>();
-        }
 
         public override void Move(Vector3 input, float deltaTime)
         {

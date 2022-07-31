@@ -18,7 +18,7 @@ namespace Assets.CodeBase.Player
 
             public override void Enter()
             {
-                Player._gun.On();
+                Controller._gun.On();
             }
 
             public override void Execute(float deltaTime)
@@ -26,35 +26,35 @@ namespace Assets.CodeBase.Player
                 Debug.Log("InBattle Execute");
 
                 _findTargetTimer.Take(deltaTime);
-                if (_findTargetTimer.Value >= Player._targetFindDelay)
+                if (_findTargetTimer.Value >= Controller._targetFindDelay)
                 {
-                    _findTargetTimer.Take(-Player._targetFindDelay);
-                    Player.FindTarget();
+                    _findTargetTimer.Take(-Controller._targetFindDelay);
+                    Controller.FindTarget();
                 }
 
                 if (CheckAndDoTransitions())
                     return;
 
-                Vector3 normalizedMovementVector = new Vector3(Player._input.Axis.x, 0, Player._input.Axis.y).normalized;
+                Vector3 normalizedMovementVector = new Vector3(Controller._input.Axis.x, 0, Controller._input.Axis.y).normalized;
 
                 if (normalizedMovementVector != Vector3.zero)
                 {
-                    Player._mover.Move(normalizedMovementVector, deltaTime);
-                    Player._viewer.PlayMoveWithGun(Player._gun.Type);
+                    Controller._mover.Move(normalizedMovementVector, deltaTime);
+                    Controller._viewer.PlayMoveWithGun(Controller._gun.Type);
                 }
                 else
                 {
-                    Player._viewer.PlayIdleWithGun(Player._gun.Type);
+                    Controller._viewer.PlayIdleWithGun(Controller._gun.Type);
                 }
 
-                Vector3 direction = Player._target.Transform.position - Player.transform.position;
-                Player._rotator.RotateIn(direction.normalized, deltaTime);
+                Vector3 direction = Controller._target.Transform.position - Controller.transform.position;
+                Controller._rotator.RotateIn(direction.normalized, deltaTime);
 
                 _shootDelayTimer.Take(deltaTime);
-                if (_shootDelayTimer.Value >= Player._gun.ShootDelay)
+                if (_shootDelayTimer.Value >= Controller._gun.ShootDelay)
                 {
-                    _shootDelayTimer.Take(-Player._gun.ShootDelay);
-                    Player._gun.Shoot();
+                    _shootDelayTimer.Take(-Controller._gun.ShootDelay);
+                    Controller._gun.Shoot();
                 }
             }
 
@@ -65,9 +65,9 @@ namespace Assets.CodeBase.Player
 
             protected override bool CheckAndDoTransitions()
             {
-                if (Player._target == null || Player._target.IsAlive == false)
+                if (Controller._target == null || Controller._target.IsAlive == false)
                 {
-                    Player.TransitionTo(PlayerState.OnLevel);
+                    Controller.TransitionTo(PlayerState.OnLevel);
                     return true;
                 }
                 return false;
