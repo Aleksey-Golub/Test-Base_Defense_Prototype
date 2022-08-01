@@ -14,8 +14,6 @@ namespace Assets.CodeBase.Enemies
 
             public override void Execute(float deltaTime)
             {
-                Debug.Log($"{Controller.name}: MoveToTargetState Execute");
-
                 FindTargetTimer.Take(deltaTime);
                 if (FindTargetTimer.Value >= Controller._targetFindDelay)
                 {

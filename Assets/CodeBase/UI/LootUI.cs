@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.CodeBase.UI
 {
-    public class LootViewer : MonoBehaviour
+    public class LootUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _gold;
         [SerializeField] private TextMeshProUGUI _gems;

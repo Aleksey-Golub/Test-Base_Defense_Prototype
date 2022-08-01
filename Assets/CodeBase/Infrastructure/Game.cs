@@ -3,15 +3,18 @@ using Assets.CodeBase.Player;
 using Assets.CodeBase.Services.Input;
 using Assets.CodeBase.Services.PersistentProgress;
 using Assets.CodeBase.UI;
+using Assets.CodeBase.UI.Windows;
 using UnityEngine;
 
 namespace Assets.CodeBase.Infrastructure
 {
-    public class Game : MonoBehaviour
+    public class Game : MonoBehaviour, IGameRestarted
     {
         [SerializeField] private Joystick _joystick;
         [SerializeField] private PlayerController _player;
-        [SerializeField] private LootViewer _lootViewer;
+        [SerializeField] private Transform _playerStartPoint;
+        [SerializeField] private LootUI _lootUI;
+        [SerializeField] private RestartWindow _restartWindow;
 
         private IInputService _inputService;
         private IPersistentProgressService _progressService;
@@ -22,7 +25,19 @@ namespace Assets.CodeBase.Infrastructure
             InitNewProgress();
 
             _player.Construct(_inputService, _progressService.Progress);
-            _lootViewer.Construct(_progressService.Progress.WorldData.LootData);
+            _player.Died += (x) => _restartWindow.SetState(true);
+
+            _lootUI.Construct(_progressService.Progress.WorldData.LootData);
+
+            _restartWindow.Construct(this);
+        }
+
+        public void RestartGame()
+        {
+            _progressService.Progress.WorldData.LootData.PlayerStorage.Reset();
+
+            _player.transform.position = _playerStartPoint.position;
+            _player.Restart();
         }
 
         private void InitNewProgress()

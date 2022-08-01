@@ -22,8 +22,6 @@ namespace Assets.CodeBase.Enemies
 
             public override void Execute(float deltaTime)
             {
-                Debug.Log($"{Controller.name}: AttackTargetState Execute");
-
                 Controller._rotator.RotateIn(VectorToTarget().normalized, deltaTime);
 
                 _timer.Take(deltaTime);

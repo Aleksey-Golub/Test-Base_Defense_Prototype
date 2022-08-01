@@ -18,12 +18,11 @@ namespace Assets.CodeBase.Player
             public override void Enter()
             {
                 Controller._gun.On();
+                Controller._hPBar.SetState(true);
             }
 
             public override void Execute(float deltaTime)
             {
-                Debug.Log("InBattle Execute");
-
                 _findTargetTimer.Take(deltaTime);
                 if (_findTargetTimer.Value >= Controller._targetFindDelay)
                 {
@@ -55,6 +54,9 @@ namespace Assets.CodeBase.Player
 
             public override void Exit()
             {
+                Controller._gun.Off();
+                Controller._hPBar.SetState(false);
+                _findTargetTimer.Reset();
             }
 
             protected override bool CheckNeedAndDoTransitions()

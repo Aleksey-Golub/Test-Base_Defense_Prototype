@@ -31,11 +31,7 @@ namespace Assets.CodeBase.Enemies
         public int HP { get; private set; }
 
         public event Action<int, int> HPChanged;
-
-        private void Start()
-        {
-            Construct();
-        }
+        public event Action<IDamageable> Died;
 
         private void Update()
         {
@@ -86,6 +82,7 @@ namespace Assets.CodeBase.Enemies
 
         private void Die()
         {
+            Died?.Invoke(this);
             _lootSpawner.Spawn();
             Destroy(gameObject);
         }

@@ -13,7 +13,7 @@ namespace Assets.CodeBase.Data
 
         public LootStorage BaseStorage { get; private set; }
         public LootStorage PlayerStorage { get; private set; }
-        
+
         public Action Changed;
 
         public void CollectForPlayer(LootType type, int amount)

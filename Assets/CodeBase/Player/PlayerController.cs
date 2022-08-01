@@ -36,6 +36,7 @@ namespace Assets.CodeBase.Player
         [field: SerializeField] public int HP { get; private set; }
 
         public event Action<int, int> HPChanged;
+        public event Action<IDamageable> Died;
 
         public void Update()
         {
@@ -55,21 +56,18 @@ namespace Assets.CodeBase.Player
             _progress = progress;
             _hPBar.Construct(this);
 
-            HP = _maxHP;
-            HPChanged?.Invoke(HP, _maxHP);
-
-            _state = new OnBaseState(this);
-            _state.Enter();
+            Restart();
         }
 
         public void TransitionTo(PlayerState transitionToState)
         {
-            _state.Exit();
+            _state?.Exit();
             _state = transitionToState switch
             {
                 PlayerState.OnBase => new OnBaseState(this),
-                PlayerState.InBattle => new InBattleState(this),
                 PlayerState.OnLevel => new OnLevelState(this),
+                PlayerState.InBattle => new InBattleState(this),
+                PlayerState.Dead => new DeathState(this),
                 PlayerState.None => throw new NotImplementedException(),
                 _ => throw new NotImplementedException(),
             };
@@ -93,9 +91,20 @@ namespace Assets.CodeBase.Player
             _progress.WorldData.LootData.CollectForPlayer(lootPiece.Type, lootPiece.Amount);
         }
 
+        public void Restart()
+        {
+            HP = _maxHP;
+            HPChanged?.Invoke(HP, _maxHP);
+            TransitionTo(PlayerState.OnBase);
+        }
+
         private void Die()
         {
-            Destroy(gameObject);
+            TransitionTo(PlayerState.Dead);
+            
+            Died?.Invoke(this);
+
+            //Destroy(gameObject);
         }
 
         private void FindTarget()
@@ -107,13 +116,14 @@ namespace Assets.CodeBase.Player
         {
             _progress.WorldData.LootData.MoveAllFromPlayerToBase();
         }
-
+        
         public enum PlayerState
         {
             None,
             OnBase,
             OnLevel,
             InBattle,
+            Dead,
         }
     }
 }

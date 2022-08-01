@@ -37,7 +37,7 @@ namespace Assets.CodeBase.Data
             return $"{nameof(Gold)}: {Gold}; {nameof(Gems)}: {Gems}";
         }
 
-        private void Reset()
+        public void Reset()
         {
             Gold = 0;
             Gems = 0;

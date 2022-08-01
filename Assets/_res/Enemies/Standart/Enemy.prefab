@@ -144,8 +144,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShootPoint: {fileID: 4774087284052897903}
-  _attackDelay: 1
   <Type>k__BackingField: 2
+  <AttackDelay>k__BackingField: 1
   _radius: 0.5
   _layerMask:
     serializedVersion: 2
@@ -752,7 +752,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bbc9a7e8992d634f9e79f90043511a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Radius>k__BackingField: 3
+  <Radius>k__BackingField: 4
   <LayerMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 512

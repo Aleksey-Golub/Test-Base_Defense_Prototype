@@ -20,7 +20,6 @@ namespace Assets.CodeBase.Player
 
             public override void Execute(float deltaTime)
             {
-                Debug.Log("OnBase Execute");
                 Vector3 normalizedMovementVector = new Vector3(Controller._input.Axis.x, 0, Controller._input.Axis.y).normalized;
 
                 if (normalizedMovementVector != Vector3.zero)
@@ -38,6 +37,8 @@ namespace Assets.CodeBase.Player
             public override void Exit()
             {
                 Controller.CanBeTarget = true;
+                Controller._gun.On();
+                Controller._hPBar.SetState(true);
             }
 
             protected override bool CheckNeedAndDoTransitions() => false;
