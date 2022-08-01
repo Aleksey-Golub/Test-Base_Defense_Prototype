@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 
-namespace Assets.CodeBase.Player.Gun
+namespace Assets.CodeBase.Logic.Gun
 {
-    public class ProjectileGun : GunBase
+    public class ProjectileGun : WeaponBase
     {
-        [Header("ProjectileGun")]
+        [Header(nameof(ProjectileGun))]
         [SerializeField] private Projectile _projectilePrefab;
         [SerializeField] private float _shootStrength = 1f;
 
-        public override void Shoot()
+        protected override void AttackIntarnal()
         {
             Projectile newProjectile = Instantiate(_projectilePrefab, ShootPoint.position, ShootPoint.rotation);
             newProjectile.Rigidbody.velocity = ShootPoint.forward * _shootStrength;

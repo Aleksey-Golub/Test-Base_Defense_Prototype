@@ -512,8 +512,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShootPoint: {fileID: 2239367355849656459}
+  _attackDelay: 1
   <Type>k__BackingField: 1
-  <ShootDelay>k__BackingField: 0.5
   _projectilePrefab: {fileID: 7227066254159763172, guid: 8a09bd5efaa4a4543b5ad87e4d9db49d, type: 3}
   _shootStrength: 10
 --- !u!1 &2239367355849656458
@@ -687,6 +687,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4386165242446616119}
   - component: {fileID: 4275168879418765786}
+  - component: {fileID: 1036705793858297585}
   m_Layer: 9
   m_Name: VoodooCustomCharacterV1.3
   m_TagString: Untagged
@@ -731,6 +732,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1036705793858297585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4005136718255770765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f34abfe2fb515d1419f7020afd619611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4128482588083237786
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,10 +824,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4275168878055505704}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea6fe1cbecb9c8346ad7a456cb1e26e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 1bfbee9ac7df27b4fb4f3466171d3611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 4275168879418765786}
+  _animationEventReporter: {fileID: 1036705793858297585}
 --- !u!114 &2614242618101040172
 MonoBehaviour:
   m_ObjectHideFlags: 0

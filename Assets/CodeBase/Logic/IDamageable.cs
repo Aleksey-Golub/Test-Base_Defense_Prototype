@@ -7,6 +7,7 @@ namespace Assets.CodeBase.Logic
     {
         Transform Transform { get; }
         bool IsAlive { get; }
+        bool CanBeTarget { get; }
         int HP { get; }
         event Action<int, int> HPChanged;
 

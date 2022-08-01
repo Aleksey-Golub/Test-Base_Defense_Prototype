@@ -1,23 +1,35 @@
 ﻿using System;
 using UnityEngine;
-using Assets.CodeBase.Player.Gun;
+using Assets.CodeBase.Logic.Gun;
 
 namespace Assets.CodeBase.Logic.CharacterComponents
 {
     public class CharacterViewer : MonoBehaviour
     {
         [SerializeField] private Animator _animator;
+        [SerializeField] private AnimationEventReporter _animationEventReporter;
 
         private AnimatorState _animatorState;
 
         private readonly int _idleStateHash = Animator.StringToHash("DynIdle");
         private readonly int _deathStateHash = Animator.StringToHash("Death");
         private readonly int _runStateHash = Animator.StringToHash("Running");
-        private readonly int _throwWalkStateHash = Animator.StringToHash("Throw");
+        private readonly int _throwStateHash = Animator.StringToHash("Throw");
         private readonly int _riffleWalkStateHash = Animator.StringToHash("RiffleWalk");
         private readonly int _riffleIdleStateHash = Animator.StringToHash("RiffleIdle");
 
-        public void PlayMove() => PlayAnimation(AnimatorState.Move);
+        public event Action AttackStarted;
+        public event Action AttackHappening;
+        public event Action AttackEnded;
+
+        private void OnEnable()
+        {
+            _animationEventReporter.AttackStarted += () => AttackStarted?.Invoke();
+            _animationEventReporter.AttackHappening += () => AttackHappening?.Invoke();
+            _animationEventReporter.AttackEnded += () => AttackEnded?.Invoke();
+        }
+
+        public void PlayRun() => PlayAnimation(AnimatorState.Run);
         public void PlayIdle() => PlayAnimation(AnimatorState.Idle);
         public void PlayDeath() => PlayAnimation(AnimatorState.Death);
         public void PlayThrow() => PlayAnimation(AnimatorState.Throw);
@@ -60,10 +72,10 @@ namespace Assets.CodeBase.Logic.CharacterComponents
         {
             return state switch
             {
-                AnimatorState.Move => _runStateHash,
+                AnimatorState.Run => _runStateHash,
                 AnimatorState.Idle => _idleStateHash,
                 AnimatorState.Death => _deathStateHash,
-                AnimatorState.Throw => _throwWalkStateHash,
+                AnimatorState.Throw => _throwStateHash,
                 AnimatorState.RiffleMove => _riffleWalkStateHash,
                 AnimatorState.RiffleIdle => _riffleIdleStateHash,
                 AnimatorState.None => throw new NotImplementedException(),
@@ -71,10 +83,15 @@ namespace Assets.CodeBase.Logic.CharacterComponents
             };
         }
 
+        private void OnAttackHappening()
+        {
+            AttackHappening?.Invoke();
+        }
+
         private enum AnimatorState
         {
             None,
-            Move,
+            Run,
             Idle,
             Death,
             Throw,

@@ -1,18 +1,17 @@
 ﻿using Assets.CodeBase.Logic;
+using Assets.CodeBase.Logic.CharacterComponents;
 using UnityEngine;
 
 namespace Assets.CodeBase.Player
 {
     public partial class PlayerController
     {
-        private class InBattleState : PlayerStateBase
+        private class InBattleState : StateBase<PlayerController>
         {
-            private Timer _shootDelayTimer;
             private Timer _findTargetTimer;
 
             public InBattleState(PlayerController player) : base(player)
             {
-                _shootDelayTimer = new Timer();
                 _findTargetTimer = new Timer();
             }
 
@@ -28,11 +27,11 @@ namespace Assets.CodeBase.Player
                 _findTargetTimer.Take(deltaTime);
                 if (_findTargetTimer.Value >= Controller._targetFindDelay)
                 {
-                    _findTargetTimer.Take(-Controller._targetFindDelay);
+                    _findTargetTimer.Reset();
                     Controller.FindTarget();
                 }
 
-                if (CheckAndDoTransitions())
+                if (CheckNeedAndDoTransitions())
                     return;
 
                 Vector3 normalizedMovementVector = new Vector3(Controller._input.Axis.x, 0, Controller._input.Axis.y).normalized;
@@ -50,20 +49,15 @@ namespace Assets.CodeBase.Player
                 Vector3 direction = Controller._target.Transform.position - Controller.transform.position;
                 Controller._rotator.RotateIn(direction.normalized, deltaTime);
 
-                _shootDelayTimer.Take(deltaTime);
-                if (_shootDelayTimer.Value >= Controller._gun.ShootDelay)
-                {
-                    _shootDelayTimer.Take(-Controller._gun.ShootDelay);
-                    Controller._gun.Shoot();
-                }
+                if (Controller._gun.CanAttack)
+                    Controller._gun.Attack();
             }
 
             public override void Exit()
             {
-                _shootDelayTimer.Reset();
             }
 
-            protected override bool CheckAndDoTransitions()
+            protected override bool CheckNeedAndDoTransitions()
             {
                 if (Controller._target == null || Controller._target.IsAlive == false)
                 {

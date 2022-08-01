@@ -1,11 +1,12 @@
 ﻿using Assets.CodeBase.Logic;
+using Assets.CodeBase.Logic.CharacterComponents;
 using UnityEngine;
 
 namespace Assets.CodeBase.Player
 {
     public partial class PlayerController
     {
-        private class OnLevelState : PlayerStateBase
+        private class OnLevelState : StateBase<PlayerController>
         {
             private Timer _findTargetTimer;
 
@@ -39,11 +40,11 @@ namespace Assets.CodeBase.Player
                 _findTargetTimer.Take(deltaTime);
                 if (_findTargetTimer.Value >= Controller._targetFindDelay)
                 {
-                    _findTargetTimer.Take(-Controller._targetFindDelay);
+                    _findTargetTimer.Reset();
                     Controller.FindTarget();
                 }
 
-                CheckAndDoTransitions();
+                CheckNeedAndDoTransitions();
             }
 
             public override void Exit()
@@ -51,7 +52,7 @@ namespace Assets.CodeBase.Player
                 _findTargetTimer.Reset();
             }
 
-            protected override bool CheckAndDoTransitions()
+            protected override bool CheckNeedAndDoTransitions()
             {
                 if (Controller._target != null && Controller._target.IsAlive)
                 {

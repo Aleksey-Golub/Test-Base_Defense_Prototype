@@ -1,7 +1,6 @@
-﻿using Assets.CodeBase.Logic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.CodeBase.Player.Gun
+namespace Assets.CodeBase.Logic.Gun
 {
     [RequireComponent(typeof(Rigidbody))]
     public class Projectile : MonoBehaviour

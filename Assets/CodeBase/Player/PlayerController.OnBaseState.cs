@@ -1,16 +1,18 @@
-﻿using UnityEngine;
+﻿using Assets.CodeBase.Logic.CharacterComponents;
+using UnityEngine;
 
 namespace Assets.CodeBase.Player
 {
     public partial class PlayerController
     {
-        private class OnBaseState : PlayerStateBase
+        private class OnBaseState : StateBase<PlayerController>
         {
             public OnBaseState(PlayerController player) : base(player)
             { }
 
             public override void Enter()
             {
+                Controller.CanBeTarget = false;
                 Controller.RemoveAllResourcesToBase();
                 Controller._gun.Off();
                 Controller._hPBar.SetState(false);
@@ -24,7 +26,7 @@ namespace Assets.CodeBase.Player
                 if (normalizedMovementVector != Vector3.zero)
                 {
                     Controller._mover.Move(normalizedMovementVector, deltaTime);
-                    Controller._viewer.PlayMove();
+                    Controller._viewer.PlayRun();
                     Controller._rotator.RotateIn(normalizedMovementVector, deltaTime);
                 }
                 else
@@ -34,9 +36,11 @@ namespace Assets.CodeBase.Player
             }
 
             public override void Exit()
-            { }
+            {
+                Controller.CanBeTarget = true;
+            }
 
-            protected override bool CheckAndDoTransitions() => false;
+            protected override bool CheckNeedAndDoTransitions() => false;
         }
     }
 }

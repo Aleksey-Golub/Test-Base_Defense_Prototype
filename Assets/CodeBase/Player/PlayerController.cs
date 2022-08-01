@@ -2,7 +2,7 @@ using Assets.CodeBase.Data;
 using Assets.CodeBase.Enemies.Loot;
 using Assets.CodeBase.Logic;
 using Assets.CodeBase.Logic.CharacterComponents;
-using Assets.CodeBase.Player.Gun;
+using Assets.CodeBase.Logic.Gun;
 using Assets.CodeBase.Services.Input;
 using Assets.CodeBase.UI;
 using System;
@@ -17,7 +17,7 @@ namespace Assets.CodeBase.Player
         [SerializeField] private RotatorBase _rotator;
         [SerializeField] private CharacterViewer _viewer;
         [SerializeField] private TargetFinderBase _targetFinder;
-        [SerializeField] private GunBase _gun;
+        [SerializeField] private ProjectileGun _gun;
         [SerializeField] private HPBar _hPBar;
 
         [Header("Settings")]
@@ -26,20 +26,22 @@ namespace Assets.CodeBase.Player
 
         private IInputService _input;
         private IDamageable _target;
-        private PlayerStateBase _state;
+        private StateBase<PlayerController> _state;
         private PlayerProgress _progress;
 
         public Transform Transform => transform;
         public bool IsAlive => HP > 0;
-        public int HP { get; private set; }
-        
+        public bool CanBeTarget { get; private set; }
+
+        [field: SerializeField] public int HP { get; private set; }
+
         public event Action<int, int> HPChanged;
 
         public void Update()
         {
-            _state.Execute(Time.deltaTime);
+            _gun.Tick(Time.deltaTime);
 
-            Debug.Log($"BaseStorage: {_progress.WorldData.LootData.BaseStorage}, \nPlayerStarage: {_progress.WorldData.LootData.PlayerStorage}");
+            _state.Execute(Time.deltaTime);
         }
 
         private void OnDrawGizmos()
@@ -98,7 +100,7 @@ namespace Assets.CodeBase.Player
 
         private void FindTarget()
         {
-            _target = _targetFinder.GetNearestTarget(transform.position);
+            _target = _targetFinder.GetNearestTargetOrNull(transform.position);
         }
 
         private void RemoveAllResourcesToBase()

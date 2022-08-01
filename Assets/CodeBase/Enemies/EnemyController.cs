@@ -1,6 +1,7 @@
 using Assets.CodeBase.Enemies.Loot;
 using Assets.CodeBase.Logic;
 using Assets.CodeBase.Logic.CharacterComponents;
+using Assets.CodeBase.Logic.Gun;
 using System;
 using UnityEngine;
 
@@ -14,8 +15,10 @@ namespace Assets.CodeBase.Enemies
         [SerializeField] private RotatorBase _rotator;
         [SerializeField] private CharacterViewer _viewer;
         [SerializeField] private TargetFinderBase _targetFinder;
+        [SerializeField] private MeleeWeapon _gun;
 
         [Header("Settings")]
+        [SerializeField] private float _attackDistance = 1f;
         [SerializeField] private float _targetFindDelay = 1f;
         [SerializeField] private int _maxHP = 5;
 
@@ -24,8 +27,9 @@ namespace Assets.CodeBase.Enemies
 
         public Transform Transform => transform;
         public bool IsAlive => HP > 0;
+        public bool CanBeTarget => true;
         public int HP { get; private set; }
-        
+
         public event Action<int, int> HPChanged;
 
         private void Start()
@@ -35,6 +39,8 @@ namespace Assets.CodeBase.Enemies
 
         private void Update()
         {
+            _gun.Tick(Time.deltaTime);
+
             _state.Execute(Time.deltaTime);
         }
 
@@ -48,7 +54,7 @@ namespace Assets.CodeBase.Enemies
             HP = _maxHP;
             HPChanged?.Invoke(HP, _maxHP);
 
-            _state = new NoPlayerState(this);
+            _state = new IdleState(this);
             _state.Enter();
         }
 
@@ -68,12 +74,10 @@ namespace Assets.CodeBase.Enemies
             _state.Exit();
             _state = transitionToState switch
             {
-                EnemyState.NoPlayer => new NoPlayerState(this),
-                EnemyState.SeePlayer => new SeePlayer(this),
+                EnemyState.Idle => new IdleState(this),
+                EnemyState.MoveToTarget => new MoveToTargetState(this),
+                EnemyState.AttackTarget => new AttackTargetState(this),
                 EnemyState.None => throw new NotImplementedException(),
-                //PlayerState.OnBase => new OnBaseState(this),
-                //PlayerState.InBattle => new InBattleState(this),
-                //PlayerState.OnLevel => new OnLevelState(this),
                 _ => throw new NotImplementedException(),
             };
 
@@ -88,14 +92,15 @@ namespace Assets.CodeBase.Enemies
 
         private void FindTarget()
         {
-            _target = _targetFinder.GetNearestTarget(transform.position);
+            _target = _targetFinder.GetNearestTargetOrNull(transform.position);
         }
 
         public enum EnemyState
         {
             None,
-            NoPlayer,
-            SeePlayer,
+            Idle,
+            MoveToTarget,
+            AttackTarget
         }
     }
 }

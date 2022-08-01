@@ -12,6 +12,6 @@ namespace Assets.CodeBase.Logic.CharacterComponents
             Radius = radius;
         }
 
-        public abstract IDamageable GetNearestTarget(Vector3 point);
+        public abstract IDamageable GetNearestTargetOrNull(Vector3 point);
     }
 }
