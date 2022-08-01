@@ -146,7 +146,7 @@ MonoBehaviour:
   ShootPoint: {fileID: 4774087284052897903}
   <Type>k__BackingField: 2
   <AttackDelay>k__BackingField: 1
-  _radius: 0.5
+  _radius: 0.7
   _layerMask:
     serializedVersion: 2
     m_Bits: 512
@@ -684,7 +684,7 @@ MonoBehaviour:
   _viewer: {fileID: 240004200125514045}
   _targetFinder: {fileID: 5958444051525765337}
   _gun: {fileID: 7026996971867209591}
-  _attackDistance: 1.5
+  _attackDistance: 1.2
   _targetFindDelay: 1
   _maxHP: 5
 --- !u!114 &4615815113754241977
