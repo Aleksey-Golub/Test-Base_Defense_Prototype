@@ -1,2 +1,1 @@
-# Test-Base_Defense_Prototype
- 
+see Assets/Тестовое задание. Unity Developer.pdf
