@@ -1,28 +1,13 @@
-﻿using Assets.CodeBase.Logic;
-using Assets.CodeBase.Logic.CharacterComponents;
-using UnityEngine;
+﻿using Assets.CodeBase.Logic.CharacterComponents;
 
 namespace Assets.CodeBase.Enemies
 {
     public partial class EnemyController
     {
-        private abstract class EnemyStateBase : StateBase<EnemyController>
+        private abstract class EnemyStateBase : CharacterStateBase<EnemyController>
         {
-            protected Timer FindTargetTimer;
             protected EnemyStateBase(EnemyController controller) : base(controller)
-            {
-                FindTargetTimer = new Timer();
-            }
-
-            protected Vector3 VectorToTarget()
-            {
-                return Controller._target.Transform.position - Controller.transform.position;
-            }
-
-            protected bool TargetNotNullAndAlive()
-            {
-                return Controller._target != null && Controller._target.IsAlive;
-            }
+            { }
         }
     }
 }

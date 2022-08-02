@@ -1,11 +1,10 @@
-﻿using Assets.CodeBase.Logic.CharacterComponents;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.CodeBase.Player
 {
     public partial class PlayerController
     {
-        private class OnBaseState : StateBase<PlayerController>
+        private class OnBaseState : PlayerStateBase
         {
             public OnBaseState(PlayerController player) : base(player)
             { }

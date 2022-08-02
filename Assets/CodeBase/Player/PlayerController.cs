@@ -10,23 +10,20 @@ using UnityEngine;
 
 namespace Assets.CodeBase.Player
 {
-    public partial class PlayerController : MonoBehaviour, IDamageable, ICharacterController
+    public partial class PlayerController : CharacterControllerBase, IDamageable
     {
         [Header("References")]
         [SerializeField] private MoverBase _mover;
         [SerializeField] private RotatorBase _rotator;
         [SerializeField] private CharacterViewer _viewer;
-        [SerializeField] private TargetFinderBase _targetFinder;
         [SerializeField] private ProjectileGun _gun;
         [SerializeField] private HPBar _hPBar;
 
         [Header("Settings")]
-        [SerializeField] private float _targetFindDelay = 1f;
         [SerializeField] private int _maxHP = 5;
 
         private IInputService _input;
-        private IDamageable _target;
-        private StateBase<PlayerController> _state;
+        private PlayerStateBase _state;
         private PlayerProgress _progress;
 
         public Transform Transform => transform;
@@ -103,13 +100,6 @@ namespace Assets.CodeBase.Player
             TransitionTo(PlayerState.Dead);
             
             Died?.Invoke(this);
-
-            //Destroy(gameObject);
-        }
-
-        private void FindTarget()
-        {
-            _target = _targetFinder.GetNearestTargetOrNull(transform.position);
         }
 
         private void RemoveAllResourcesToBase()

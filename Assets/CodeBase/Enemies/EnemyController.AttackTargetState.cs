@@ -1,5 +1,4 @@
 ﻿using Assets.CodeBase.Logic;
-using UnityEngine;
 
 namespace Assets.CodeBase.Enemies
 {

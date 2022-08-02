@@ -1,19 +1,13 @@
-﻿using Assets.CodeBase.Logic;
-using Assets.CodeBase.Logic.CharacterComponents;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.CodeBase.Player
 {
     public partial class PlayerController
     {
-        private class OnLevelState : StateBase<PlayerController>
+        private class OnLevelState : PlayerStateBase
         {
-            private Timer _findTargetTimer;
-
             public OnLevelState(PlayerController player) : base(player)
-            {
-                _findTargetTimer = new Timer();
-            }
+            { }
 
             public override void Enter()
             {
@@ -36,26 +30,20 @@ namespace Assets.CodeBase.Player
                     Controller._viewer.PlayIdleWithGun(Controller._gun.Type);
                 }
 
-                _findTargetTimer.Take(deltaTime);
-                if (_findTargetTimer.Value >= Controller._targetFindDelay)
-                {
-                    _findTargetTimer.Reset();
-                    Controller.FindTarget();
-                }
+                UpdateTimerAndTryFindTarget(deltaTime);
 
                 CheckNeedAndDoTransitions();
             }
 
             public override void Exit()
             {
-                _findTargetTimer.Reset();
                 Controller._gun.Off();
                 Controller._hPBar.SetState(false);
             }
 
             protected override bool CheckNeedAndDoTransitions()
             {
-                if (Controller._target != null && Controller._target.IsAlive)
+                if (Controller.Target != null && Controller.Target.IsAlive)
                 {
                     Controller.TransitionTo(PlayerState.InBattle);
                     return true;

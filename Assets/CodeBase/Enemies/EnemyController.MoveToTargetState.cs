@@ -14,17 +14,12 @@ namespace Assets.CodeBase.Enemies
 
             public override void Execute(float deltaTime)
             {
-                FindTargetTimer.Take(deltaTime);
-                if (FindTargetTimer.Value >= Controller._targetFindDelay)
-                {
-                    FindTargetTimer.Reset();
-                    Controller.FindTarget();
-                }
+                UpdateTimerAndTryFindTarget(deltaTime);
 
                 if (CheckNeedAndDoTransitions())
                     return;
 
-                Vector3 normalizedMovementVector = (Controller._target.Transform.position - Controller.transform.position).normalized;
+                Vector3 normalizedMovementVector = (Controller.Target.Transform.position - Controller.transform.position).normalized;
                 if (normalizedMovementVector != Vector3.zero)
                 {
                     Controller._mover.Move(normalizedMovementVector, deltaTime);
@@ -39,12 +34,10 @@ namespace Assets.CodeBase.Enemies
 
             public override void Exit()
             {
-                FindTargetTimer.Reset();
             }
 
             protected override bool CheckNeedAndDoTransitions()
             {
-                //if (Controller._target == null || Controller._target.IsAlive == false)
                 if (TargetNotNullAndAlive() == false)
                 {
                     Controller.TransitionTo(EnemyState.Idle);

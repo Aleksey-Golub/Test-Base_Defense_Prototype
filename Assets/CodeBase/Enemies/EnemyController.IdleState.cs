@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Assets.CodeBase.Enemies
+﻿namespace Assets.CodeBase.Enemies
 {
     public partial class EnemyController
     {
@@ -15,12 +13,7 @@ namespace Assets.CodeBase.Enemies
 
             public override void Execute(float deltaTime)
             {
-                FindTargetTimer.Take(deltaTime);
-                if (FindTargetTimer.Value >= Controller._targetFindDelay)
-                {
-                    FindTargetTimer.Reset();
-                    Controller.FindTarget();
-                }
+                UpdateTimerAndTryFindTarget(deltaTime);
 
                 Controller._viewer.PlayIdle();
                 CheckNeedAndDoTransitions();
@@ -28,7 +21,6 @@ namespace Assets.CodeBase.Enemies
 
             public override void Exit()
             {
-                FindTargetTimer.Reset();
             }
 
             protected override bool CheckNeedAndDoTransitions()

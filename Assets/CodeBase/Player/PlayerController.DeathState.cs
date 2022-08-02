@@ -1,10 +1,8 @@
-﻿using Assets.CodeBase.Logic.CharacterComponents;
-
-namespace Assets.CodeBase.Player
+﻿namespace Assets.CodeBase.Player
 {
     public partial class PlayerController
     {
-        private class DeathState : StateBase<PlayerController>
+        private class DeathState : PlayerStateBase
         {
             public DeathState(PlayerController controller) : base(controller)
             { }

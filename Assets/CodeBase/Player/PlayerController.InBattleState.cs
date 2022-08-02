@@ -1,19 +1,14 @@
 ﻿using Assets.CodeBase.Logic;
-using Assets.CodeBase.Logic.CharacterComponents;
 using UnityEngine;
 
 namespace Assets.CodeBase.Player
 {
     public partial class PlayerController
     {
-        private class InBattleState : StateBase<PlayerController>
+        private class InBattleState : PlayerStateBase
         {
-            private Timer _findTargetTimer;
-
             public InBattleState(PlayerController player) : base(player)
-            {
-                _findTargetTimer = new Timer();
-            }
+            { }
 
             public override void Enter()
             {
@@ -23,12 +18,7 @@ namespace Assets.CodeBase.Player
 
             public override void Execute(float deltaTime)
             {
-                _findTargetTimer.Take(deltaTime);
-                if (_findTargetTimer.Value >= Controller._targetFindDelay)
-                {
-                    _findTargetTimer.Reset();
-                    Controller.FindTarget();
-                }
+                UpdateTimerAndTryFindTarget(deltaTime);
 
                 if (CheckNeedAndDoTransitions())
                     return;
@@ -45,7 +35,7 @@ namespace Assets.CodeBase.Player
                     Controller._viewer.PlayIdleWithGun(Controller._gun.Type);
                 }
 
-                Vector3 direction = Controller._target.Transform.position - Controller.transform.position;
+                Vector3 direction = Controller.Target.Transform.position - Controller.transform.position;
                 Controller._rotator.RotateIn(direction.normalized, deltaTime);
 
                 if (Controller._gun.CanAttack)
@@ -56,12 +46,11 @@ namespace Assets.CodeBase.Player
             {
                 Controller._gun.Off();
                 Controller._hPBar.SetState(false);
-                _findTargetTimer.Reset();
             }
 
             protected override bool CheckNeedAndDoTransitions()
             {
-                if (Controller._target == null || Controller._target.IsAlive == false)
+                if (Controller.Target == null || Controller.Target.IsAlive == false)
                 {
                     Controller.TransitionTo(PlayerState.OnLevel);
                     return true;

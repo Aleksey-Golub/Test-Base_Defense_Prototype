@@ -7,22 +7,19 @@ using UnityEngine;
 
 namespace Assets.CodeBase.Enemies
 {
-    public partial class EnemyController : MonoBehaviour, IDamageable, ICharacterController
+    public partial class EnemyController : CharacterControllerBase, IDamageable
     {
         [Header("References")]
         [SerializeField] private LootSpawner _lootSpawner;
         [SerializeField] private MoverBase _mover;
         [SerializeField] private RotatorBase _rotator;
         [SerializeField] private CharacterViewer _viewer;
-        [SerializeField] private TargetFinderBase _targetFinder;
         [SerializeField] private MeleeWeapon _gun;
 
         [Header("Settings")]
         [SerializeField] private float _attackDistance = 1f;
-        [SerializeField] private float _targetFindDelay = 1f;
         [SerializeField] private int _maxHP = 5;
 
-        private IDamageable _target;
         private EnemyStateBase _state;
 
         public Transform Transform => transform;
@@ -85,11 +82,6 @@ namespace Assets.CodeBase.Enemies
             Died?.Invoke(this);
             _lootSpawner.Spawn();
             Destroy(gameObject);
-        }
-
-        private void FindTarget()
-        {
-            _target = _targetFinder.GetNearestTargetOrNull(transform.position);
         }
 
         public enum EnemyState
